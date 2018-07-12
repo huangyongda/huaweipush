@@ -1,0 +1,21 @@
+{
+  "name": "huangyongda/huaweiPush",
+  "description": "huawei Push 华为推送",
+  "authors": [
+    {
+      "name": "huangyongda",
+      "email": "122402509@qq.com"
+    }
+  ],
+  "require": {
+    "singiu/http-php": "^1.0.0",
+    "php": ">=5.6.0"
+    
+  },
+  "autoload": {
+    "psr-4": {
+      "huangyongda\\huaweiPush\\": "src/huaweiPush/",
+      "huangyongda\\Http\\": "src/Http/"
+    }
+  }
+}
