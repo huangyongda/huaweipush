@@ -23,7 +23,7 @@ $AccessToken=$push->getAccessToken();//获取AccessToken 可以保存起来
 $push->setTitle($title)
     ->setMessage($message)
     ->setAccessToken($AccessToken)
-    ->setAppPkgName("com.cug.maintenance")
+    ->setAppPkgName("com.cug.maintenance") //设置包名称 
     ->addDeviceToken('0865831037206556300001986600CN01')
     ->addDeviceToken('0865831037206556300001986600CN01');
 $push->sendMessage(); // 执行推送消息。
@@ -31,4 +31,3 @@ var_dump($push->isSendSuccess()); //是否推送成功
 var_dump($push->isSendFail()); //是否推送失败
 var_dump($push->getAccessTokenExpiresTime()); //获取AccessToken 过期时间
 var_dump($push->getSendSuccessRequestId()); //获取推送成功后接口返回的请求id
-//$push->test();
