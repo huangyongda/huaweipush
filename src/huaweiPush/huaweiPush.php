@@ -55,7 +55,6 @@ class huaweiPush
             ]
         ]);
         $array=$response->getResponseArray();
-        print_r($array);
         $this->_accessTokenInfo=$array;
         return $this->_accessTokenInfo;
     }
