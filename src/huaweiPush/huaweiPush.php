@@ -243,6 +243,11 @@ class huaweiPush
                 "customize" =>$this->Customize
             ];
         }
+        if(is_string($this->Customize) && trim($this->Customize)!=""){
+            $array["hps"]["ext"]=[
+                "customize" =>[trim($this->Customize)]
+            ];
+        }
         $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
 
 
