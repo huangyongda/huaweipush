@@ -25,3 +25,6 @@ var_dump($push->getAccessTokenExpiresTime()); //获取AccessToken 过期时间
 var_dump($push->getSendSuccessRequestId()); //获取推送成功后接口返回的请求id
 //$push->test();
 ```
+![image](https://github.com/huangyongda/huaweipush/blob/master/IMG_3057.JPG)
+点击后打开
+![image](https://github.com/huangyongda/huaweipush/blob/master/IMG_3058.JPG)
