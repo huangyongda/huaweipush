@@ -10,13 +10,14 @@ $title = '推送的消息标题';
 $message = '需要推送的消息内容';
 
 $AccessToken=$push->getAccessToken();//获取AccessToken 可以保存起来
-
 $push->setTitle($title)
     ->setMessage($message)
     ->setAccessToken($AccessToken)
-    ->setAppPkgName("com.cug.maintenance")
-    ->addDeviceToken('0865831037206556300001986600CN01')
+    ->setAppPkgName("com.cug.maintenance") //设置包名称
+    ->setCustomize(["你好"]) //设置自定义参数 （点击app后可以应用可获取的参数）
+//    ->addDeviceToken('0865831037206556300001986600CN01')
     ->addDeviceToken('0865831037206556300001986600CN01');
+$push->sendMessage(); // 执行推送消息。
     
 $push->sendMessage(); // 执行推送消息。
 var_dump($push->isSendSuccess()); //是否推送成功
