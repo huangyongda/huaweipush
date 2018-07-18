@@ -55,6 +55,7 @@ class huaweiPush
             ]
         ]);
         $array=$response->getResponseArray();
+        print_r($array);
         $this->_accessTokenInfo=$array;
         return $this->_accessTokenInfo;
     }
@@ -205,6 +206,17 @@ class huaweiPush
 
     }
 
+    private function isDictArray($array=array())
+    {
+        if(!is_array($array) && count($array)>0){
+            return false;
+        }
+        if(substr(json_encode($array),0,1) == "{"){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 发送华为推送消息。
      * @param $deviceToken
@@ -239,9 +251,13 @@ class huaweiPush
         ];
 
         if(is_array($this->Customize) && count($this->Customize)>0){
-            $array["hps"]["ext"]=[
-                "customize" =>$this->Customize
-            ];
+            if($this->isDictArray($this->Customize)){
+                $array["hps"]["ext"]=[ "customize" =>[$this->Customize]  ];
+            }
+            else{
+                $array["hps"]["ext"]=[ "customize" =>$this->Customize  ];
+            }
+
         }
         if(is_string($this->Customize) && trim($this->Customize)!=""){
             $array["hps"]["ext"]=[
@@ -249,6 +265,7 @@ class huaweiPush
             ];
         }
         $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
+        echo $payload;
 
 
 
