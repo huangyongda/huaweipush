@@ -24,6 +24,7 @@ class huaweiPush
     private $appPkgName;
     /**@var  $response Response **/
     private $response;
+    private $Customize;
 
     /**
      * 构造函数。
@@ -39,7 +40,11 @@ class huaweiPush
         $this->_http->setHttpVersion(Http::HTTP_VERSION_1_1);
     }
 
-
+    /**
+     * 获取AccessToken信息
+     * @return mixed
+     * @throws \Exception
+     */
     private function getAccessTokenInfo()
     {
         $response = $this->_http->post('https://login.cloud.huawei.com/oauth2/v2/token', [
@@ -112,12 +117,22 @@ class huaweiPush
         return $this;
     }
 
+    /**
+     * 添加要推送的用户token
+     * @param string $deviceToken
+     * @return $this
+     */
     public function addDeviceToken($deviceToken="")
     {
         $this->deviceToken[]=$deviceToken;
         return $this;
     }
 
+    /**
+     * 设置AccessToken
+     * @param string $AccessToken
+     * @return $this
+     */
     public function setAccessToken($AccessToken="")
     {
         $this->AccessToken=$AccessToken;
@@ -130,6 +145,21 @@ class huaweiPush
         return $this;
     }
 
+    /**
+     * 设置自定义参数 （点击app后可以应用可获取的参数）
+     * @param $array array
+     * @return $this
+     */
+    public function setCustomize($array=array())
+    {
+        $this->Customize=$array;
+        return $this;
+    }
+
+    /**
+     * 参数检查
+     * @throws \Exception
+     */
     private function check()
     {
        $_clientId= trim($this->_clientId);
@@ -190,29 +220,31 @@ class huaweiPush
         $message=$this->message;
         $title=$this->title;
 
-        if (is_array($message)) {
-            $payload = json_encode($message, JSON_UNESCAPED_UNICODE);
-        } else if (is_string($message)) {
-            $payload = json_encode([
-                'hps' => [
-                    'msg' => [
+        $array=[
+            'hps' => [
+                'msg' => [
+                    'type' => 3,
+                    'body' => [
+                        'content' => $message,
+                        'title' => $title
+                    ],
+                    'action' => [
                         'type' => 3,
-                        'body' => [
-                            'content' => $message,
-                            'title' => $title
-                        ],
-                        'action' => [
-                            'type' => 3,
-                            'param' => [
-                                'appPkgName' => $this->appPkgName
-                            ]
+                        'param' => [
+                            'appPkgName' => $this->appPkgName
                         ]
                     ]
                 ]
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            $payload = '';
+            ]
+        ];
+
+        if(is_array($this->Customize) && count($this->Customize)>0){
+            $array["hps"]["ext"]=[
+                "customize" =>$this->Customize
+            ];
         }
+        $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
+
 
 
         $response = $this->_http->post('https://api.push.hicloud.com/pushsend.do', [
