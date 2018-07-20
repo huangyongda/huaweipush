@@ -282,6 +282,7 @@ class huaweiPush
         }
         if(is_string($this->intent) && trim($this->intent)!=""){
             $array["hps"]["msg"]['action']['param']['intent']=trim($this->intent);
+            $array["hps"]["msg"]['action']['type']=1;
         }
         $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
 
