@@ -25,6 +25,7 @@ class huaweiPush
     /**@var  $response Response **/
     private $response;
     private $Customize;
+    private $intent;//开发者可以自定义Intent，用户收到通知栏消息后点击通知栏消息打开应用定义的这个Intent页面
 
     /**
      * 构造函数。
@@ -139,9 +140,25 @@ class huaweiPush
         return $this;
     }
 
+    /**
+     * 设置包名称 如果没有设置则会收不到通知
+     * @param string $appPkgName
+     * @return $this
+     */
     public function setAppPkgName($appPkgName="com.cug.maintenance")
     {
         $this->appPkgName=$appPkgName;
+        return $this;
+    }
+
+    /**
+     * 开发者可以自定义Intent，用户收到通知栏消息后点击通知栏消息打开应用定义的这个Intent页面
+     * @param string $intent
+     * @return $this
+     */
+    public function setIntent($intent="intent://com.cug.maintenance/jump?data={\"type\":0}#Intent;scheme=cug;end")
+    {
+        $this->intent=$intent;
         return $this;
     }
 
@@ -262,6 +279,9 @@ class huaweiPush
             $array["hps"]["ext"]=[
                 "customize" =>[trim($this->Customize)]
             ];
+        }
+        if(is_string($this->intent) && trim($this->intent)!=""){
+            $array["hps"]["msg"]['action']['param']['intent']=trim($this->intent);
         }
         $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
 
