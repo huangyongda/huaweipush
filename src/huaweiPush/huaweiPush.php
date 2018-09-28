@@ -75,7 +75,7 @@ class huaweiPush
             $access_token=$this->_accessTokenInfo['access_token'];
         }
         if(!$access_token){
-            throw  new \Exception("获取AccessToken失败");
+            throw  new \Exception(sprintf("获取AccessToken失败. msg:%s", json_encode($this->_accessTokenInfo, JSON_UNESCAPED_UNICODE)));
         }
         return $access_token;
     }
@@ -287,6 +287,40 @@ class huaweiPush
         $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
 
 
+
+        $response = $this->_http->post('https://api.push.hicloud.com/pushsend.do', [
+            'query' => [
+                'nsp_ctx' => json_encode(['ver' => '1', 'appId' => $this->_clientId])
+            ],
+            'data' => [
+                'access_token' => $this->AccessToken,
+                'nsp_ts' => time(),
+                'nsp_svc' => 'openpush.message.api.send',
+                'device_token_list' => json_encode($this->deviceToken),
+                'payload' => $payload
+            ]
+        ]);
+        $this->response=$response;
+
+        return $response;
+    }
+
+    public function sendTransmissionMessage()
+    {
+        // 构建 Payload
+        $message=$this->message;
+        $title=$this->title;
+
+        $array=[
+            'hps' => [
+                'msg' => [
+                    'type' => 1,
+                    'body' => $this->Customize
+                ]
+            ]
+        ];
+
+        $payload = json_encode($array, JSON_UNESCAPED_UNICODE);
 
         $response = $this->_http->post('https://api.push.hicloud.com/pushsend.do', [
             'query' => [
