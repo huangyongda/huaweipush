@@ -48,7 +48,7 @@ class huaweiPush
      */
     private function getAccessTokenInfo()
     {
-        $response = $this->_http->post('https://login.cloud.huawei.com/oauth2/v2/token', [
+        $response = $this->_http->post('https://oauth-login.cloud.huawei.com/oauth2/v3/token', [
             'data' => [
                 'grant_type' => 'client_credentials',
                 'client_id' => $this->_clientId,
